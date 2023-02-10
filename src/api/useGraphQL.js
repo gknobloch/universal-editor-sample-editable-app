@@ -7,25 +7,27 @@ it.
 */
 import {useState, useEffect} from 'react';
 const {AEMHeadless} = require('@adobe/aem-headless-client-js')
-const {REACT_APP_GRAPHQL_ENDPOINT, REACT_APP_HOST_URI} = process.env;
+const {REACT_APP_GRAPHQL_ENDPOINT, REACT_APP_HOST_URI, REACT_APP_SERVICE_TOKEN} = process.env;
 
 /**
  * Custom React Hook to perform a GraphQL query
  * @param query - GraphQL query
  * @param path - Persistent query path
+ * @param params - GraphQL query parameters
  */
-function useGraphQL(query, path) {
+function useGraphQL(query, path, params) {
     let [data, setData] = useState(null);
     let [errorMessage, setErrors] = useState(null);
     useEffect(() => {
         function makeRequest() {
             const sdk = new AEMHeadless({
                 serviceURL: REACT_APP_HOST_URI,
+                auth: REACT_APP_SERVICE_TOKEN,
                 endpoint: REACT_APP_GRAPHQL_ENDPOINT,
             });
             const request = query ? sdk.runQuery.bind(sdk) : sdk.runPersistedQuery.bind(sdk);
     
-            request(path)
+            request(path, params)
                 .then(({data, errors}) => {
                     //If there are errors in the response set the error message
                     if (errors) {
@@ -42,7 +44,7 @@ function useGraphQL(query, path) {
                 });
         }
         makeRequest();
-    }, [query, path]);
+    }, [query, path, params]);
 
     
 

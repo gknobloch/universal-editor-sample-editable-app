@@ -25,7 +25,10 @@ function EventDetail() {
     const persistentQuery = `wknd-shared/event-by-slug`;
 
     // Use a custom React Hook to execute the GraphQL query
-    const { data, errorMessage } = useGraphQL('', persistentQuery, {slug: eventSlug });
+    const params = useMemo(() => {
+        return {slug: eventSlug };
+    }, [eventSlug]);
+    const { data, errorMessage } = useGraphQL('', persistentQuery, params);
 
     // If there is an error with the GraphQL query
     if(errorMessage) return <Error errorMessage={errorMessage} />;

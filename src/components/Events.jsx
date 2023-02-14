@@ -26,12 +26,13 @@ function EventItem(props) {
       <Link to={`/event:${props.slug}`}>
         <img className="event-item-image" src={`${props.teasingImage._publishUrl}`}
                 alt={props.title} itemProp="teasingImage" itemType="image" />
+        <div className="event-item-title" itemProp="eventName" itemType="text">{props.eventName}</div>
       </Link>
       <div className="event-item-details">
-        <div className="event-item-date" itemProp="eventStart" itemType="date">{props.eventStart}</div>
-        <div className="event-item-date" itemProp="eventEnd" itemType="date">{props.eventEnd}</div>
+        <span className="event-item-date" itemProp="eventStart" itemType="date">{props.eventStart}</span>
+        <span> to </span>
+        <span className="event-item-date" itemProp="eventEnd" itemType="date">{props.eventEnd}</span>
       </div>
-      <div className="event-item-title" itemProp="eventName" itemType="text">{props.eventName}</div>
     </li>
   );
 }
@@ -54,6 +55,7 @@ function Events() {
 
   return (
       <div className="events">
+        <h2>WKND Events</h2>
         <ul className="event-items">
           {
               // Iterate over the returned data items from the query

@@ -52,27 +52,58 @@ function EventDetail() {
     </div>);
 }
 
+function EventDetailSpeaker({name, title, profilePicture, keynote}) {
+    const keynnoteSpeakerClass = keynote ? 'event-detail-keynote-speaker' : '';
+    return (
+        <li className={"event-detail-speaker " + keynnoteSpeakerClass}> 
+            <div className="event-detail-speaker-card">
+                <span className="event-detail-speaker-name">{name}</span>
+                <span className="event-detail-speaker-title">{title}</span>
+            </div>
+            <img className="event-detail-speaker-img"
+                    src={profilePicture._publishUrl} alt={name} itemType="image"/>
+        </li>
+    );
+}
+
 function EventDetailRender({
     _path,
     eventName,
     description,
     teasingImage,
     capacity,
-    references
+    references,
+    eventStart,
+    eventEnd,
+    speakers
 }) {
     const editorProps = useMemo(() => true && { itemID: _path, itemType: "urn:fcs:type/fragment" }, [_path]);
 
     return (
         <div {...editorProps} itemScope>
             <h1 className="event-detail-title">{eventName}</h1>
-            <div className="event-detail-info">
-                <div className="event-detail-info-capacity" itemProp='capacity' itemType="text">{capacity}</div>
-            </div>
             <div className="event-detail-content">
                 <img className="event-detail-teasingImage"
                     src={teasingImage._publishUrl} alt={eventName} itemType="image"/>
+                <div>
+                <div className="event-detail-dates">
+                    <span className="event-item-date" itemProp="eventStart" itemType="date">{eventStart}</span>
+                    <span> to </span>
+                    <span className="event-item-date" itemProp="eventEnd" itemType="date">{eventEnd}</span>
+                </div>
+                <div className="event-detail-description">{mapJsonRichText(description.json, customRenderOptions(references))}</div>
+                </div>
+                <div className="event-detail-speakers">
+                    <h2>Featured Speakers</h2>
+                    <ul className="event-detail-speakers-grid">
+                        {
+                            speakers.map((speaker) => {
+                                return <EventDetailSpeaker {...speaker} />
+                            })
+                        }
+                    </ul>
+                </div>
             </div>
-            <div>{mapJsonRichText(description.json, customRenderOptions(references))}</div>
         </div>
     );
 }

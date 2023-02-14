@@ -8,9 +8,7 @@ it.
 import React from 'react';
 import Adventures from './Adventures';
 import Events from './Events';
-import Card from './Card';
-import Summary from './Summary';
-import Title from './Title';
+
 /***
  * Displays a grid of current events & adventures
  */

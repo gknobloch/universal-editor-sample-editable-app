@@ -74,7 +74,7 @@ function Adventures() {
               //Iterate over the returned data items from the query
               data.adventureList.items.map((adventure, index) => {
                 return (
-                  <AdventureItem key={index} {...adventure} />
+                  <AdventureItem key={adventure.slug} {...adventure} />
                 );
               })
           }

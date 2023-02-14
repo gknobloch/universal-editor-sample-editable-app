@@ -37,21 +37,23 @@ function EventItem(props) {
   );
 }
 
+// this has to be declared outside the render function so it is constant
+// otherwise there is an infinite re-render loop
+const queryParameters = {
+  count: 2
+};
+
 function Events() {
   const persistentQuery = 'wknd-shared/events-paginated';
   // Use a custom React Hook to execute the GraphQL query
-  var queryParameters = {
-    count: 2
-  };
-  const { data, errorMessage } = useGraphQL('', persistentQuery, queryParameters);
+  
+  const { data, errorMessage } = useGraphQL(undefined, persistentQuery, queryParameters);
 
   // If there is an error with the GraphQL query
   if (errorMessage) return <Error errorMessage={errorMessage} />;
 
   // If data is null then return a loading state...
   if (!data) return <Loading />;
-
-  console.log('data', data);
 
   return (
       <div className="events">
@@ -61,7 +63,7 @@ function Events() {
               // Iterate over the returned data items from the query
               data.eventPaginated.edges.map((event, index) => {
                 return (
-                  <EventItem key={index} {...event.node} />
+                  <EventItem key={event.node.slug} {...event.node} />
                 );
               })
           }

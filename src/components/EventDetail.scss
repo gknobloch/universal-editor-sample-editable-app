@@ -35,6 +35,7 @@ it.
        .event-detail-speakers-grid {
         list-style: none;
         display: flex;
+        gap: 2rem;
 
         .event-detail-speaker {
           position: relative;
@@ -42,6 +43,11 @@ it.
           height: 300px;
           display: grid;
           grid-template-rows: 1fr auto;
+
+          &.event-detail-keynote-speaker {
+            width: calc(400px + 2rem);
+            height: 300px;
+          }
 
           .event-detail-speaker-card {
             background-color: lighten(#000, 25%);

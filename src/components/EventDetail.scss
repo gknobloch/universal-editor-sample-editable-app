@@ -35,6 +35,7 @@ it.
        .event-detail-speakers-grid {
         list-style: none;
         display: flex;
+        flex-wrap: wrap;
         gap: 2rem;
 
         .event-detail-speaker {
@@ -47,6 +48,7 @@ it.
           &.event-detail-keynote-speaker {
             width: calc(400px + 2rem);
             height: 300px;
+            background-image: url("../images/keynote-bg.png");
           }
 
           .event-detail-speaker-card {
@@ -58,6 +60,7 @@ it.
             flex-direction: column;
             align-items: center;
             text-align: center;
+            z-index: 1;
 
             > span {
               margin-bottom: .4rem;
@@ -72,7 +75,6 @@ it.
             position: absolute;
             object-fit: cover;
             inset: 0;
-            z-index: -1;
             height: 100%;
             width: 100%;
           }

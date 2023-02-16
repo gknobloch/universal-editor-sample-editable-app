@@ -117,6 +117,9 @@ function EventDetailRender({
                                     return <EventDetailSpeaker {...speaker} />
                                 } else if(speaker.__typename === 'KeynoteSpeakerModel') {
                                     return <EventDetailKeynoteSpeaker {...speaker} />
+                                } else {
+                                    // should never happen
+                                    return ('');
                                 }
                                 
                             })

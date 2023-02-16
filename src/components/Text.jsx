@@ -10,23 +10,30 @@ import React, { useEffect, useMemo } from 'react';
 import {fetchData} from '../utils/fetchData';
 
 const Text = (props) => {
-  const { itemID, itemProp, itemType, className } = props;
-  const editorProps = useMemo(() => true && {
+  const { itemID, itemProp = "text", itemType, className, data: initialData, isComponent = false } = props;
+  const [isInEditor,setIsInEditor] = useState(false);
+  const editorProps = useMemo(() => isInEditor && {
     itemID,
     itemProp,
-    itemType
-  }, [itemID, itemProp, itemType]);
-
-  const [data,setData] = React.useState({});
+    itemType,
+    "data-editor-behavior": isComponent
+  }, [isInEditor, itemID, itemProp, itemType, isComponent]);
   useEffect(() => {
-    if(!itemID || !itemProp) return;
-    fetchData(itemID).then((data) => setData(data));
-  }, [itemID, itemProp]);
+    getEditorContext({ isInEditor: setIsInEditor });
+  }, []);
+
+  const [data,setData] = React.useState(initialData || {});
+  useEffect(() => {
+    if(!itemID || !itemProp ) return;
+    if(!initialData) { fetchData(itemID).then((data) => setData(data)) };
+  }, [itemID, itemProp, initialData]);
 
   return (
-    <div {...editorProps} className={className}>
-      {itemType === "richtext" ? <div dangerouslySetInnerHTML={{__html: data[itemProp]}}/> : data[itemProp]}
-    </div>
+      itemType !== "richtext" ?(
+          <div {...editorProps} className={className} data-test="test">
+            {data[itemProp]}
+          </div>
+      ) : <div {...editorProps} className={className} dangerouslySetInnerHTML={{__html: data[itemProp]}}/>
   );
 };
 

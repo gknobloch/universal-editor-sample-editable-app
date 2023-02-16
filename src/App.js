@@ -7,9 +7,8 @@ import AdventureDetail from "./components/AdventureDetail";
 import Articles from "./components/Articles";
 import ArticleDetail from "./components/ArticleDetail";
 import About from "./components/About";
-import EventDetail from "./components/EventDetail";
-import "./api/mirage.js";
 import ContentSample from "./components/ContentSample";
+import EventDetail from "./components/EventDetail";
 const {REACT_APP_HOST_URI} = process.env;
 
 // import { EditorProvider } from '@aem-sites/universal-editor-react';

@@ -55,37 +55,28 @@ function EventDetail() {
     </div>);
 }
 
-function EventDetailKeynoteSpeaker({name, title, heroImage}) {
-    return (
-        <li className="event-detail-speaker event-detail-keynote-speaker"> 
-            <div className="event-detail-speaker-card">
-                <span className="event-detail-speaker-name">{name}</span>
-                <span className="event-detail-speaker-title">{title}</span>
-            </div>
-            <img className="event-detail-speaker-img"
-                    src={ heroImage._publishUrl} alt={name} itemType="image"/>
-        </li>
-    );
-}
+function EventDetailSpeaker(props) {
+    const editorProps = useMemo(() => true && { itemID: "urn:aemconnection:" + props?._path + "/jcr:content/data/master", itemType: "reference", itemfilter: "cf"}, [props._path]);
 
-function EventDetailSpeaker({name, title, profilePicture}) {
+    const IsKeynoteSpeaker = (props.__typename === 'KeynoteSpeakerModel');
+    const keynnoteSpeakerClass = IsKeynoteSpeaker ? ' event-detail-keynote-speaker' : '';
+    const picture = IsKeynoteSpeaker ? props.heroImage : props.profilePicture;
+
     return (
-        <li className="event-detail-speaker"> 
+        <li className={"event-detail-speaker" + keynnoteSpeakerClass}  {...editorProps}> 
             <div className="event-detail-speaker-card">
-                <span className="event-detail-speaker-name">{name}</span>
-                <span className="event-detail-speaker-title">{title}</span>
+                <span className="event-detail-speaker-name">{props.name}</span>
+                <span className="event-detail-speaker-title">{props.title}</span>
             </div>
             <img className="event-detail-speaker-img"
-                    src={profilePicture._publishUrl} alt={name} itemType="image"/>
+                    src={picture._publishUrl} alt={props.name}/>
         </li>
     );
 }
 
 function EventDetailRender(props) {
-    const editorProps = useMemo(() => true && { itemID: "urn:aemconnection:" + props?._path + "/jcr:content/data/master", itemType: "reference", itemfilter: "cf"}, [props._path]);
-
     return (
-        <div {...editorProps} itemScope>
+        <div itemScope>
             <h1 className="event-detail-title" itemProp="eventName" itemType="text">{props.eventName}</h1>
             <div className="event-detail-content">
                 <img className="event-detail-teasingImage"
@@ -103,14 +94,7 @@ function EventDetailRender(props) {
                     <ul className="event-detail-speakers-grid">
                         {
                             props.speakers.map((speaker) => {
-                                if (speaker.__typename === 'EventSpeakerModel') {
-                                    return <EventDetailSpeaker {...speaker} />
-                                } else if(speaker.__typename === 'KeynoteSpeakerModel') {
-                                    return <EventDetailKeynoteSpeaker {...speaker} />
-                                } else {
-                                    // should never happen
-                                    return ('');
-                                }
+                                return <EventDetailSpeaker key={speaker._path} {...speaker} />
                             })
                         }
                     </ul>

@@ -81,38 +81,28 @@ function EventDetailSpeaker({name, title, profilePicture}) {
     );
 }
 
-function EventDetailRender({
-    _path,
-    eventName,
-    description,
-    teasingImage,
-    capacity,
-    references,
-    eventStart,
-    eventEnd,
-    speakers
-}) {
-    const editorProps = useMemo(() => true && { itemID: _path, itemType: "urn:fcs:type/fragment" }, [_path]);
+function EventDetailRender(props) {
+    const editorProps = useMemo(() => true && { itemID: "urn:aemconnection:" + props?._path + "/jcr:content/data/master", itemType: "reference", itemfilter: "cf"}, [props._path]);
 
     return (
         <div {...editorProps} itemScope>
-            <h1 className="event-detail-title">{eventName}</h1>
+            <h1 className="event-detail-title" itemProp="eventName" itemType="text">{props.eventName}</h1>
             <div className="event-detail-content">
                 <img className="event-detail-teasingImage"
-                    src={teasingImage._publishUrl} alt={eventName} itemType="image"/>
+                    src={props.teasingImage._publishUrl} alt={props.eventName} itemType="media"/>
                 <div>
                 <div className="event-detail-dates">
-                    <span className="event-item-date" itemProp="eventStart" itemType="date">{eventStart}</span>
+                    <span className="event-item-date">{props.eventStart}</span>
                     <span> to </span>
-                    <span className="event-item-date" itemProp="eventEnd" itemType="date">{eventEnd}</span>
+                    <span className="event-item-date">{props.eventEnd}</span>
                 </div>
-                <div className="event-detail-description">{mapJsonRichText(description.json, customRenderOptions(references))}</div>
+                <div className="event-detail-description">{mapJsonRichText(props.description.json, customRenderOptions(props.references))}</div>
                 </div>
                 <div className="event-detail-speakers">
                     <h2>Featured Speakers</h2>
                     <ul className="event-detail-speakers-grid">
                         {
-                            speakers.map((speaker) => {
+                            props.speakers.map((speaker) => {
                                 if (speaker.__typename === 'EventSpeakerModel') {
                                     return <EventDetailSpeaker {...speaker} />
                                 } else if(speaker.__typename === 'KeynoteSpeakerModel') {
@@ -121,7 +111,6 @@ function EventDetailRender({
                                     // should never happen
                                     return ('');
                                 }
-                                
                             })
                         }
                     </ul>

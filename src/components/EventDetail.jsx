@@ -55,10 +55,22 @@ function EventDetail() {
     </div>);
 }
 
-function EventDetailSpeaker({name, title, profilePicture, keynote}) {
-    const keynnoteSpeakerClass = keynote ? 'event-detail-keynote-speaker' : '';
+function EventDetailKeynoteSpeaker({name, title, heroImage}) {
     return (
-        <li className={"event-detail-speaker " + keynnoteSpeakerClass}> 
+        <li className="event-detail-speaker event-detail-keynote-speaker"> 
+            <div className="event-detail-speaker-card">
+                <span className="event-detail-speaker-name">{name}</span>
+                <span className="event-detail-speaker-title">{title}</span>
+            </div>
+            <img className="event-detail-speaker-img"
+                    src={ heroImage._publishUrl} alt={name} itemType="image"/>
+        </li>
+    );
+}
+
+function EventDetailSpeaker({name, title, profilePicture}) {
+    return (
+        <li className="event-detail-speaker"> 
             <div className="event-detail-speaker-card">
                 <span className="event-detail-speaker-name">{name}</span>
                 <span className="event-detail-speaker-title">{title}</span>
@@ -101,7 +113,15 @@ function EventDetailRender({
                     <ul className="event-detail-speakers-grid">
                         {
                             speakers.map((speaker) => {
-                                return <EventDetailSpeaker {...speaker} />
+                                if (speaker.__typename === 'EventSpeakerModel') {
+                                    return <EventDetailSpeaker {...speaker} />
+                                } else if(speaker.__typename === 'KeynoteSpeakerModel') {
+                                    return <EventDetailKeynoteSpeaker {...speaker} />
+                                } else {
+                                    // should never happen
+                                    return ('');
+                                }
+                                
                             })
                         }
                     </ul>

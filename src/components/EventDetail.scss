@@ -34,23 +34,24 @@ it.
       
        .event-detail-speakers-grid {
         list-style: none;
-        display: flex;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
         gap: 2rem;
+        margin: 2rem;
 
         .event-detail-speaker {
           position: relative;
-          width: 200px;
-          height: 300px;
+          // width: 250px;
+          height: 350px;
           display: grid;
           grid-template-rows: 1fr auto;
 
           &.event-detail-keynote-speaker {
-            width: calc(400px + 2rem);
-            height: 300px;
+            background-image: url("../images/keynote-bg.png");
           }
 
           .event-detail-speaker-card {
-            background-color: lighten(#000, 25%);
+            background-color: rgba(#000, .7);
             color: white;
             grid-row: 2;
             padding: .5rem 1rem;
@@ -58,6 +59,7 @@ it.
             flex-direction: column;
             align-items: center;
             text-align: center;
+            z-index: 1;
 
             > span {
               margin-bottom: .4rem;
@@ -72,7 +74,6 @@ it.
             position: absolute;
             object-fit: cover;
             inset: 0;
-            z-index: -1;
             height: 100%;
             width: 100%;
           }
@@ -86,6 +87,28 @@ it.
   .event-detail {
     .event-detail-content {
       grid-template-columns: 1fr 1fr;
+
+      .event-detail-speakers {
+        .event-detail-speakers-grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+    }
+  }
+}
+
+@media only screen and (min-width: $tablet-breakpoint) {
+  .event-detail {
+    .event-detail-content {
+      .event-detail-speakers {
+        .event-detail-speakers-grid {
+          grid-template-columns: repeat(4, 1fr);
+
+          .event-detail-speaker.event-detail-keynote-speaker {
+            grid-column: span 2;
+          }
+        }
+      }
     }
   }
 }

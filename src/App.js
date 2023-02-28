@@ -30,10 +30,6 @@ const {REACT_APP_HOST_URI} = process.env;
 // }
 
 function App() {
-  useEffect(() => {
-    document.querySelector('meta[name="urn:auecon:aemconnection"]').setAttribute("content", `aem:${REACT_APP_HOST_URI}`);
-  });
-
   return (
     <div className="App">
       <div className="Home">

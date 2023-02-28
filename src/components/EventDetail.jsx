@@ -56,14 +56,12 @@ function EventDetail() {
 }
 
 function EventDetailSpeaker(props) {
-    const editorProps = useMemo(() => true && { itemID: "urn:aemconnection:" + props?._path + "/jcr:content/data/master", itemType: "reference", itemfilter: "cf"}, [props._path]);
-
     const IsKeynoteSpeaker = (props.__typename === 'KeynoteSpeakerModel');
     const keynnoteSpeakerClass = IsKeynoteSpeaker ? ' event-detail-keynote-speaker' : '';
     const picture = IsKeynoteSpeaker ? props.heroImage : props.profilePicture;
 
     return (
-        <li className={"event-detail-speaker" + keynnoteSpeakerClass}  {...editorProps}> 
+        <li className={"event-detail-speaker" + keynnoteSpeakerClass}> 
             <div className="event-detail-speaker-card">
                 <span className="event-detail-speaker-name">{props.name}</span>
                 <span className="event-detail-speaker-title">{props.title}</span>
